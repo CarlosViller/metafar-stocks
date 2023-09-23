@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import StockList from "./StockList";
 import SearchBar from "./SearchBar";
 import { useQuery } from "../hooks/useQuery";
+import { CircularProgress } from "@mui/material";
 
 const PAGE_SIZE = 50;
 
@@ -50,7 +51,13 @@ export default function Home() {
   return (
     <section id="home">
       <SearchBar />
-      {loading ? <p>Loading...</p> : <StockList stocks={pageStocks} />}
+      {loading ? (
+        <CircularProgress sx={{ color: "#ad4de8", marginTop: 12 }} />
+      ) : (
+        <>
+          <StockList stocks={pageStocks} />
+        </>
+      )}
     </section>
   );
 }
