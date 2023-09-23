@@ -23,3 +23,12 @@ header span {
   color: #ccc;
   font-size: 1.3em;
 }
+
+main {
+  padding: 4em 0;
+}
+
+main > section {
+  max-width: 90vw;
+  margin: 0 auto;
+}
