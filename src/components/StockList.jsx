@@ -5,6 +5,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { Link } from "react-router-dom";
 
 export default function StockList({ stocks }) {
   if (stocks.length === 0) {
@@ -29,7 +30,9 @@ export default function StockList({ stocks }) {
                 key={`${stock.symbol}-${i}`}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                <TableCell>{stock.symbol}</TableCell>
+                <TableCell>
+                  <Link to={`/stock/${stock.symbol}`}>{stock.symbol}</Link>
+                </TableCell>
                 <TableCell>{stock.name}</TableCell>
                 <TableCell>{stock.currency}</TableCell>
                 <TableCell>{stock.type}</TableCell>

@@ -69,3 +69,8 @@ main > section {
   text-align: center;
   margin: 1em 0;
 }
+
+.stock-detail-header {
+  width: 100%;
+  text-align: left;
+}
