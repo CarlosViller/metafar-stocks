@@ -1,8 +1,12 @@
+import { Link } from "react-router-dom";
+
 export default function Header() {
   return (
     <header>
-      <img width={150} src="/metafar.svg" alt="logo" />
-      <span>Stocks</span>
+      <Link to="/">
+        <img width={150} src="/metafar.svg" alt="logo" />
+      </Link>
+        <span>Stocks</span>
     </header>
   );
 }
