@@ -68,6 +68,7 @@ export default function Home() {
               marginTop: "35px",
               "&>ul": {
                 justifyContent: "center",
+                flexWrap: "nowrap"
               },
             }}
             shape="rounded"
