@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import StockList from "./StockList";
+import SearchBar from "./SearchBar";
 
 export default function Home() {
   const [stocks, setStocks] = useState([]);
@@ -14,7 +15,15 @@ export default function Home() {
   }, []);
 
   return (
-    <section id="home">{loading ? <p>Loading...</p> : <StockList stocks={stocks} />}</section>
+    <section id="home">
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <div>
+          <SearchBar />
+          <StockList stocks={stocks} />
+        </div>
+      )}
+    </section>
   );
 }
-

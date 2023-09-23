@@ -32,3 +32,31 @@ main > section {
   max-width: 90vw;
   margin: 0 auto;
 }
+
+#search-bar {
+  display: flex;
+  padding: 5px 20px;
+  align-items: center;
+  width: 375px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+}
+
+#search-bar input {
+  font-size: 1.2em;
+  width: 100%;
+  border: none;
+  margin-right: 0.5em;
+}
+
+#search-bar input:focus{
+  outline: none;
+}
+
+#search-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2em;
+  gap: 5px;
+}
