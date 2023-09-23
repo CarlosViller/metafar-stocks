@@ -5,18 +5,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { useMemo, useState } from "react";
-
-const PAGE_SIZE = 50;
-
-function paginate(arr, currentPage) {
-  return arr.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
-}
 
 export default function StockList({ stocks }) {
-  const [page, setPage] = useState(1);
-  const pageStocks = useMemo(() => paginate(stocks, page), [page]);
-
   return (
     <section>
       <TableContainer component={Paper}>
@@ -30,7 +20,7 @@ export default function StockList({ stocks }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {pageStocks.map((stock, i) => (
+            {stocks.map((stock, i) => (
               <TableRow
                 key={`${stock.symbol}-${i}`}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
