@@ -10,6 +10,7 @@ function App() {
       <main>
         <Routes>
           <Route path="/" exact element={<Home />} />
+          <Route path="/search" exact element={<Home />} />
         </Routes>
       </main>
     </BrowserRouter>
