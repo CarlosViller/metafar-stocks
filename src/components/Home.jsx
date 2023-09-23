@@ -23,8 +23,14 @@ export default function Home() {
       .finally(() => setLoading(false));
   }, []);
 
+  // Resetea 'page' a 1 cada vez que cambiamos de pagina o los query params cambian
   useEffect(() => setPage(1), [query]);
 
+  /**
+   * Crea una pagina stocks a mostrar, si no hay query params, significa que estamos en "/" y se usaran 
+   * todas la stocks para la paginacion, en caso contrario, se filtrara las stocks dependiendo del input del usuario y luego
+   * se hara la paginacion a partir de las stocks resultantes.
+   */
   const pageStocks = useMemo(() => {
     if (query.size !== 0) {
       const type = query.get("type");
