@@ -5,9 +5,8 @@ import SearchBar from "./SearchBar";
 import { useQuery } from "../hooks/useQuery";
 import { CircularProgress, Pagination } from "@mui/material";
 
-const PAGE_SIZE = 50;
-
 function paginate(arr, currentPage) {
+  const PAGE_SIZE = 50;
   return arr.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 }
 
