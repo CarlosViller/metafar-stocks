@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import StockList from "./StockList";
 import SearchBar from "./SearchBar";
 import { useQuery } from "../hooks/useQuery";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Pagination } from "@mui/material";
 
 const PAGE_SIZE = 50;
 
@@ -52,11 +52,27 @@ export default function Home() {
     <section id="home">
       <SearchBar />
       {loading ? (
-        <CircularProgress sx={{ color: "#ad4de8", marginTop: 12 }} />
+        <CircularProgress sx={{ marginTop: 12 }} />
       ) : (
-        <>
+        <section>
           <StockList stocks={pageStocks} />
-        </>
+          <Pagination
+            page={page}
+            onChange={(e, value) => {
+              setPage(value);
+              window.scrollTo(0, 0);
+            }}
+            count={stocks.length}
+            color="primary"
+            sx={{
+              marginTop: "35px",
+              "&>ul": {
+                justifyContent: "center",
+              },
+            }}
+            shape="rounded"
+          />
+        </section>
       )}
     </section>
   );

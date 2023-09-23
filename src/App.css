@@ -8,6 +8,10 @@ body {
   font-family: 'Albert Sans', sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 header {
   display: flex;
   justify-content: center;

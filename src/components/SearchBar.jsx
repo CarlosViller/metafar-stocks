@@ -35,7 +35,7 @@ export default function SearchBar() {
               <Radio
                 sx={{
                   "&.Mui-checked": {
-                    color: "#ad4de8",
+                    color: "primary",
                   },
                 }}
               />
@@ -48,7 +48,7 @@ export default function SearchBar() {
               <Radio
                 sx={{
                   "&.Mui-checked": {
-                    color: "#ad4de8",
+                    color: "primary",
                   },
                 }}
               />
