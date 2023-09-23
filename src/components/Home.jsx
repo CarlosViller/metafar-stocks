@@ -27,7 +27,7 @@ export default function Home() {
   useEffect(() => setPage(1), [query]);
 
   /**
-   * Crea una pagina stocks a mostrar, si no hay query params, significa que estamos en "/" y se usaran 
+   * Crea una pagina stocks a mostrar, si no hay query params, significa que estamos en "/" y se usaran
    * todas la stocks para la paginacion, en caso contrario, se filtrara las stocks dependiendo del input del usuario y luego
    * se hara la paginacion a partir de las stocks resultantes.
    */
@@ -38,7 +38,9 @@ export default function Home() {
 
       if (!type || !q) return [];
 
-      const filteredStocks = stocks.filter((stock) => stock[type].includes(q));
+      const filteredStocks = stocks.filter((stock) =>
+        stock[type].toLowerCase().includes(q.toLowerCase())
+      );
       return paginate(filteredStocks, page);
     }
 
