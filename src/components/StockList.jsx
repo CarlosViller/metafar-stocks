@@ -7,6 +7,10 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
 export default function StockList({ stocks }) {
+  if (stocks.length === 0) {
+    return <h1 id="no-results">No results</h1>;
+  }
+  
   return (
     <section>
       <TableContainer component={Paper}>

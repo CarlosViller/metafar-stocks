@@ -60,3 +60,7 @@ main > section {
   margin-bottom: 2em;
   gap: 5px;
 }
+#no-results {
+  text-align: center;
+  margin: 1em 0;
+}
