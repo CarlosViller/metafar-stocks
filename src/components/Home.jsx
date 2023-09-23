@@ -17,7 +17,7 @@ export default function Home() {
   const query = useQuery();
 
   useEffect(() => {
-    fetch("https://api.twelvedata.com/stocks")
+    fetch("https://api.twelvedata.com/stocks?country=US")
       .then((res) => res.json())
       .then((payload) => setStocks(payload.data))
       .finally(() => setLoading(false));
