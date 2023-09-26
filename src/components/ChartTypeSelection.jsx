@@ -4,7 +4,8 @@ export default function ChartTypeSelection({ chartType, setChartType }) {
   return (
     <Select
       sx={{ marginBottom: 3 }}
-      labelId="interval-label"
+      labelId="chart-type"
+      id='chart-type-select'
       value={chartType}
       onChange={(e) => setChartType(e.target.value)}
     >

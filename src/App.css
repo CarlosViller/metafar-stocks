@@ -73,4 +73,14 @@ main > section {
 .stock-detail-header {
   width: 100%;
   text-align: left;
+  margin-bottom: 25px;
+}
+.historic-date-pickers {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+  margin-bottom: 24px;
+}
+#stock-detail-container {
+  text-align: left;
 }
