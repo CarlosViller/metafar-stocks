@@ -1,3 +1,4 @@
+import { FormControl } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 
 export default function StockDetailDatePicker({
@@ -5,7 +6,7 @@ export default function StockDetailDatePicker({
   setHistoricDates,
 }) {
   return (
-    <section className="historic-date-pickers">
+    <FormControl  className="historic-date-pickers">
       <DatePicker
         label="Desde"
         value={historicDates.from}
@@ -20,6 +21,6 @@ export default function StockDetailDatePicker({
           setHistoricDates({ ...historicDates, to: newValue })
         }
       />
-    </section>
+    </FormControl>
   );
 }
