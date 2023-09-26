@@ -14,10 +14,13 @@ const API_KEY = "2cf36da53dc14a07860fd406140fba56";
 
 export default function StockDetail() {
   const [stock, setStock] = useState();
-  const [loading, setLoading] = useState(true);
   const [stockPrices, setStockPrices] = useState();
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(true);
+
   const [chartType, setChartType] = useState("tiempo real");
-  const [interval, setInterval] = useState("5min");
+  const [timeInterval, setTimeInterval] = useState("5min");
   const [historicDates, setHistoricDates] = useState({
     from: dayjs(),
     to: dayjs(),
@@ -89,7 +92,10 @@ export default function StockDetail() {
               setHistoricDates={setHistoricDates}
             />
           )}
-          <SelectInterval interval={interval} setInterval={setInterval} />
+          <SelectInterval
+            timeInterval={timeInterval}
+            setTimeInterval={setTimeInterval}
+          />
         </section>
         <section className="stock-graph-container">
           {stockPrices && stock && (
