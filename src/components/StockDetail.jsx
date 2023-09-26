@@ -48,16 +48,7 @@ export default function StockDetail() {
               setHistoricDates={setHistoricDates}
             />
           )}
-          <Select
-            labelId="interval-label"
-            id="interval-label-select"
-            value={interval}
-            onChange={(e) => setInterval(e.target.value)}
-          >
-            <MenuItem value="1m">1m</MenuItem>
-            <MenuItem value="5m">5m</MenuItem>
-            <MenuItem value="15m">15m</MenuItem>
-          </Select>
+            <SelectInterval interval={interval} setInterval={setInterval} />
         </FormControl>
       </section>
       <section className="stock-graph-container"></section>
