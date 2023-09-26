@@ -4,6 +4,7 @@ import StockList from "./StockList";
 import SearchBar from "./SearchBar";
 import { useQuery } from "../hooks/useQuery";
 import { CircularProgress, Pagination } from "@mui/material";
+import Error from "./Error";
 
 function paginate(arr, currentPage) {
   const PAGE_SIZE = 50;
@@ -13,13 +14,23 @@ function paginate(arr, currentPage) {
 export default function Home() {
   const [stocks, setStocks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [page, setPage] = useState(1);
   const query = useQuery();
 
   useEffect(() => {
     fetch("https://api.twelvedata.com/stocks?country=US")
-      .then((res) => res.json())
-      .then((payload) => setStocks(payload.data))
+      .then((res) => {
+        if (!res.ok) throw new Error();
+        return res.json();
+      })
+      .then((payload) => {
+        setStocks(payload.data);
+        setError(false);
+      })
+      .catch(() => {
+        setError(true);
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -47,6 +58,8 @@ export default function Home() {
     return paginate(stocks, page);
   }, [page, query, stocks]);
 
+  if (error) return <Error />;
+
   return (
     <section id="home">
       <SearchBar />
@@ -67,7 +80,7 @@ export default function Home() {
               marginTop: "35px",
               "&>ul": {
                 justifyContent: "center",
-                flexWrap: "nowrap"
+                flexWrap: "nowrap",
               },
             }}
             shape="rounded"
