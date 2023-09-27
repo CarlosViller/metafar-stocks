@@ -8,9 +8,20 @@ import Error from "./Error";
 import { API_ENDPOINT } from "../constants";
 import Loading from "./Loading";
 
-function paginate(arr, currentPage) {
-  const PAGE_SIZE = 50;
-  return arr.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+/**
+ * Devuelve una pagina de 'n' elementos y la cantidad de paginas restantes.
+ *
+ * Default: n = 50
+ * @param {Array<T>} arr
+ * @param {number} currentPage
+ *
+ * @returns {[Array<T>, number]}
+ */
+function paginate(arr, currentPage, n = 50) {
+  return [
+    arr.slice((currentPage - 1) * n, currentPage * n),
+    Math.ceil(arr.length / n),
+  ];
 }
 
 export default function Home() {
@@ -44,7 +55,7 @@ export default function Home() {
    * todas la stocks para la paginacion, en caso contrario, se filtrara las stocks dependiendo del input del usuario y luego
    * se hara la paginacion a partir de las stocks resultantes.
    */
-  const pageStocks = useMemo(() => {
+  const [pageStocks, pageCount] = useMemo(() => {
     if (query.size !== 0) {
       const type = query.get("type");
       const q = query.get("q");
@@ -76,7 +87,7 @@ export default function Home() {
               setPage(value);
               window.scrollTo(0, 0);
             }}
-            count={stocks.length}
+            count={pageCount}
             color="primary"
             sx={{
               marginTop: "35px",
