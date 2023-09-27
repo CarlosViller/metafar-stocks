@@ -17,6 +17,7 @@ export default function SearchBar() {
         <input
           type="text"
           value={query}
+          placeholder="APPL"
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               navigate(`/search?type=${type}&q=${query}`);
@@ -47,7 +48,7 @@ export default function SearchBar() {
                 }}
               />
             }
-            label="Symbol"
+            label="Símbolo"
           />
           <FormControlLabel
             value="name"
@@ -60,7 +61,7 @@ export default function SearchBar() {
                 }}
               />
             }
-            label="Name"
+            label="Nombre"
           />
         </RadioGroup>
       </FormControl>
