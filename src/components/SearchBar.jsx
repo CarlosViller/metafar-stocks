@@ -2,12 +2,14 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 export default function SearchBar() {
   const [type, setType] = useState("symbol");
   const [query, setQuery] = useState("");
+
+  const navigate = useNavigate();
 
   return (
     <div id="search-container">
@@ -15,6 +17,11 @@ export default function SearchBar() {
         <input
           type="text"
           value={query}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              navigate(`/search?type=${type}&q=${query}`);
+            }
+          }}
           onChange={(e) => setQuery(e.target.value)}
         />
         <Link to={`/search?type=${type}&q=${query}`}>
