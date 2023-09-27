@@ -5,7 +5,7 @@
 }
 
 body {
-  font-family: 'Albert Sans', sans-serif;
+  font-family: "Albert Sans", sans-serif;
 }
 
 html {
@@ -33,7 +33,7 @@ main {
 }
 
 main > section {
-  max-width: 90vw;
+  max-width: 95vw;
   margin: 0 auto;
   text-align: center;
 }
@@ -54,7 +54,7 @@ main > section {
   margin-right: 0.5em;
 }
 
-#search-bar input:focus{
+#search-bar input:focus {
   outline: none;
 }
 
@@ -100,4 +100,14 @@ main > section {
   text-align: center;
   font-size: 2.4em;
   margin-top: 1em;
+}
+
+@media (max-width: 500px) {
+  #stock-detail-container {
+    flex-direction: column;
+  }
+  .chart-options,
+  .stock-graph-container {
+    width: 100%;
+  }
 }
