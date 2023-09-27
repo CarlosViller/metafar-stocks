@@ -10,6 +10,11 @@ import HighchartsReact from "highcharts-react-official";
 import SelectInterval from "./SelectInterval";
 import Error from "./Error";
 
+/**
+ * Devuelve la conversion en milisegundos de los intervalos de tiempo posible para renderizar el gráfico.
+ * @param { string } t
+ * @returns {number}
+ */
 function parseTimeInterval(t) {
   switch (t) {
     case "1min":
@@ -23,30 +28,49 @@ function parseTimeInterval(t) {
   }
 }
 
+/**
+ * Devuelve la fecha y hora de un formato ISO
+ *
+ * Ejemplo: 2023-09-26T21:08:18.323Z => 2023-09-26 21:08:18
+ *
+ * @param { {from: dayjs.Dayjs, to: dayjs.Dayjs} } historicDates
+ * @returns { [string, string] }
+ */
+function getISOHistoricDates(historicDates) {
+  const fromISO = historicDates.from.$d.toISOString().split("T");
+  const toISO = historicDates.to.$d.toISOString().split("T");
+  return [
+    `${fromISO[0]} ${fromISO[1].split(".")[0]}`,
+    `${toISO[0]} ${toISO[1].split(".")[0]}`,
+  ];
+}
+
 // Una buena practica seria guardar la key en un archivo .env, ya que es un challange, la dejo aca por practicidad.
-const API_KEY = "2cf36da53dc14a07860fd406140fba56 ";
+const API_KEY = "2cf36da53dc14a07860fd406140fba56";
+const API_ENDPOINT = "https://api.twelvedata.com/time_series";
+
+const initialDate = new Date();
+initialDate.setMonth(initialDate.getMonth() - 1);
 
 export default function StockDetail() {
   const [stock, setStock] = useState();
   const [stockPrices, setStockPrices] = useState();
 
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(true);
+  const [error, setError] = useState(false);
 
   const [chartType, setChartType] = useState("tiempo real");
   const [timeInterval, setTimeInterval] = useState("5min");
   const [historicDates, setHistoricDates] = useState({
-    from: dayjs(),
+    from: dayjs(initialDate),
     to: dayjs(),
   });
 
   const { symbol } = useParams();
 
-  useEffect(() => {
-    function fetchAPI() {
-      fetch(
-        `https://api.twelvedata.com/time_series?symbol=${symbol}&interval=${timeInterval}&apikey=${API_KEY}&source=docs&outputsize=15`
-      )
+
+  function fetchAPI(url) {
+    fetch(url)
         .then((res) => {
           if (!res.ok) {
             throw new Error();
@@ -64,14 +88,31 @@ export default function StockDetail() {
         .finally(() => setLoading(false));
     }
 
-    fetchAPI();
+  useEffect(() => {
+    let id = "";
 
-    const id = setInterval(fetchAPI, parseTimeInterval(timeInterval));
+    if (chartType === "tiempo real") {
+      const fetchRealtime = () => {
+        fetchAPI(
+          `${API_ENDPOINT}?symbol=${symbol}&interval=${timeInterval}&apikey=${API_KEY}&source=docs&outputsize=15`
+        );
+      };
+
+      fetchRealtime();
+
+      id = setInterval(fetchRealtime, parseTimeInterval(timeInterval));
+    } else {
+      const [fromDate, toDate] = getISOHistoricDates(historicDates);
+
+      fetchAPI(
+        `${API_ENDPOINT}?symbol=${symbol}&interval=${timeInterval}&apikey=${API_KEY}&source=docs&start_date=${fromDate}&end_date=${toDate}`
+      );
+    }
 
     return () => {
       clearInterval(id);
     };
-  }, [symbol, timeInterval]);
+  }, [chartType, historicDates, symbol, timeInterval]);
 
   const options = useMemo(() => {
     if (!stockPrices || !stock) return null;
