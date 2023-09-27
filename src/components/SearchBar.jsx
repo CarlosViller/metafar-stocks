@@ -17,7 +17,7 @@ export default function SearchBar() {
         <input
           type="text"
           value={query}
-          placeholder="APPL"
+          placeholder="AAPL"
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               navigate(`/search?type=${type}&q=${query}`);
