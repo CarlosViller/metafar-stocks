@@ -1,4 +1,3 @@
-import { CircularProgress } from "@mui/material";
 import dayjs from "dayjs";
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -15,6 +14,7 @@ import {
   CHART_TYPES,
   TIME_INTERVALS,
 } from "../constants";
+import Loading from "./Loading";
 
 /**
  * Devuelve la conversion en milisegundos de los intervalos de tiempo posibles para renderizar el gráfico.
@@ -72,6 +72,7 @@ export default function StockDetail() {
   const { symbol } = useParams();
 
   function fetchAPI(url) {
+    setLoading(true);
     fetch(url)
       .then((res) => {
         if (!res.ok) {
@@ -149,12 +150,9 @@ export default function StockDetail() {
     return <Error />;
   }
 
-  if (loading) {
-    return (
-      <div style={{ textAlign: "center" }}>
-        <CircularProgress />
-      </div>
-    );
+  // Primer render
+  if (loading && !stock && !stockPrices) {
+    return <Loading />;
   }
 
   return (
@@ -175,8 +173,10 @@ export default function StockDetail() {
           />
         </section>
         <section className="stock-graph-container">
-          {stockPrices && (
+          {stockPrices && !loading ? (
             <HighchartsReact highcharts={Highcharts} options={options} />
+          ) : (
+            <Loading />
           )}
         </section>
       </section>

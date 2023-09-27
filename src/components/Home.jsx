@@ -3,9 +3,10 @@ import { useEffect } from "react";
 import StockList from "./StockList";
 import SearchBar from "./SearchBar";
 import { useQuery } from "../hooks/useQuery";
-import { CircularProgress, Pagination } from "@mui/material";
+import { Pagination } from "@mui/material";
 import Error from "./Error";
 import { API_ENDPOINT } from "../constants";
+import Loading from "./Loading";
 
 function paginate(arr, currentPage) {
   const PAGE_SIZE = 50;
@@ -65,7 +66,7 @@ export default function Home() {
     <section id="home">
       <SearchBar />
       {loading ? (
-        <CircularProgress sx={{ marginTop: 12 }} />
+        <Loading />
       ) : (
         <section>
           <StockList stocks={pageStocks} />
