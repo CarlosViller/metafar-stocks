@@ -9,19 +9,25 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import SelectInterval from "./SelectInterval";
 import Error from "./Error";
+import {
+  API_ENDPOINT,
+  API_KEY,
+  CHART_TYPES,
+  TIME_INTERVALS,
+} from "../constants";
 
 /**
- * Devuelve la conversion en milisegundos de los intervalos de tiempo posible para renderizar el gráfico.
+ * Devuelve la conversion en milisegundos de los intervalos de tiempo posibles para renderizar el gráfico.
  * @param { string } t
  * @returns {number}
  */
 function parseTimeInterval(t) {
   switch (t) {
-    case "1min":
+    case TIME_INTERVALS["1min"]:
       return 60000;
-    case "5min":
+    case TIME_INTERVALS["5min"]:
       return 300000;
-    case "15min":
+    case TIME_INTERVALS["15min"]:
       return 900000;
     default:
       return 300000;
@@ -36,7 +42,7 @@ function parseTimeInterval(t) {
  * @param { {from: dayjs.Dayjs, to: dayjs.Dayjs} } historicDates
  * @returns { [string, string] }
  */
-function getISOHistoricDates(historicDates) {
+function getISODates(historicDates) {
   const fromISO = historicDates.from.$d.toISOString().split("T");
   const toISO = historicDates.to.$d.toISOString().split("T");
   return [
@@ -45,10 +51,7 @@ function getISOHistoricDates(historicDates) {
   ];
 }
 
-// Una buena practica seria guardar la key en un archivo .env, ya que es un challange, la dejo aca por practicidad.
-const API_KEY = "2cf36da53dc14a07860fd406140fba56";
-const API_ENDPOINT = "https://api.twelvedata.com/time_series";
-
+// Por defecto, la fecha de inicio del gráfico por fechas sera un mes atrás a partir de la fecha actual.
 const initialDate = new Date();
 initialDate.setMonth(initialDate.getMonth() - 1);
 
@@ -59,42 +62,41 @@ export default function StockDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  const [chartType, setChartType] = useState("tiempo real");
-  const [timeInterval, setTimeInterval] = useState("5min");
-  const [historicDates, setHistoricDates] = useState({
+  const [chartType, setChartType] = useState(CHART_TYPES.tiempo_real);
+  const [timeInterval, setTimeInterval] = useState(TIME_INTERVALS["5min"]);
+  const [dates, setDates] = useState({
     from: dayjs(initialDate),
     to: dayjs(),
   });
 
   const { symbol } = useParams();
 
-
   function fetchAPI(url) {
     fetch(url)
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error();
-          }
-          return res.json();
-        })
-        .then((data) => {
-          setStock(data.meta);
-          setStockPrices(data.values.reverse());
-          setError(false);
-        })
-        .catch(() => {
-          setError(true);
-        })
-        .finally(() => setLoading(false));
-    }
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error();
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setStock(data.meta);
+        setStockPrices(data.values.reverse());
+        setError(false);
+      })
+      .catch(() => {
+        setError(true);
+      })
+      .finally(() => setLoading(false));
+  }
 
   useEffect(() => {
     let id = "";
 
-    if (chartType === "tiempo real") {
+    if (chartType === CHART_TYPES.tiempo_real) {
       const fetchRealtime = () => {
         fetchAPI(
-          `${API_ENDPOINT}?symbol=${symbol}&interval=${timeInterval}&apikey=${API_KEY}&source=docs&outputsize=15`
+          `${API_ENDPOINT}/time_series?symbol=${symbol}&interval=${timeInterval}&apikey=${API_KEY}&source=docs&outputsize=15`
         );
       };
 
@@ -102,17 +104,17 @@ export default function StockDetail() {
 
       id = setInterval(fetchRealtime, parseTimeInterval(timeInterval));
     } else {
-      const [fromDate, toDate] = getISOHistoricDates(historicDates);
+      const [fromDate, toDate] = getISODates(dates);
 
       fetchAPI(
-        `${API_ENDPOINT}?symbol=${symbol}&interval=${timeInterval}&apikey=${API_KEY}&source=docs&start_date=${fromDate}&end_date=${toDate}`
+        `${API_ENDPOINT}/time_series?symbol=${symbol}&interval=${timeInterval}&apikey=${API_KEY}&source=docs&start_date=${fromDate}&end_date=${toDate}`
       );
     }
 
     return () => {
       clearInterval(id);
     };
-  }, [chartType, historicDates, symbol, timeInterval]);
+  }, [chartType, dates, symbol, timeInterval]);
 
   const options = useMemo(() => {
     if (!stockPrices || !stock) return null;
@@ -164,11 +166,8 @@ export default function StockDetail() {
             chartType={chartType}
             setChartType={setChartType}
           />
-          {chartType === "historico" && (
-            <StockDetailDatePicker
-              historicDates={historicDates}
-              setHistoricDates={setHistoricDates}
-            />
+          {chartType === CHART_TYPES.historico && (
+            <StockDetailDatePicker dates={dates} setDates={setDates} />
           )}
           <SelectInterval
             timeInterval={timeInterval}

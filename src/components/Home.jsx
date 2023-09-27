@@ -5,6 +5,7 @@ import SearchBar from "./SearchBar";
 import { useQuery } from "../hooks/useQuery";
 import { CircularProgress, Pagination } from "@mui/material";
 import Error from "./Error";
+import { API_ENDPOINT } from "../constants";
 
 function paginate(arr, currentPage) {
   const PAGE_SIZE = 50;
@@ -19,7 +20,7 @@ export default function Home() {
   const query = useQuery();
 
   useEffect(() => {
-    fetch("https://api.twelvedata.com/stocks?country=US")
+    fetch(`${API_ENDPOINT}/stocks?country=US`)
       .then((res) => {
         if (!res.ok) throw new Error();
         return res.json();

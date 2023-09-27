@@ -1,4 +1,5 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { TIME_INTERVALS } from "../constants";
 
 export default function SelectInterval({ timeInterval, setTimeInterval }) {
   return (
@@ -10,9 +11,15 @@ export default function SelectInterval({ timeInterval, setTimeInterval }) {
         value={timeInterval}
         onChange={(e) => setTimeInterval(e.target.value)}
       >
-        <MenuItem value="1min">1min</MenuItem>
-        <MenuItem value="5min">5min</MenuItem>
-        <MenuItem value="15min">15min</MenuItem>
+        <MenuItem value={TIME_INTERVALS["1min"]}>
+          {TIME_INTERVALS["1min"]}
+        </MenuItem>
+        <MenuItem value={TIME_INTERVALS["5min"]}>
+          {TIME_INTERVALS["5min"]}
+        </MenuItem>
+        <MenuItem value={TIME_INTERVALS["15min"]}>
+          {TIME_INTERVALS["15min"]}
+        </MenuItem>
       </Select>
     </FormControl>
   );
